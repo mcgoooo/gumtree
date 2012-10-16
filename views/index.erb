@@ -21,13 +21,13 @@ var map = L.map('map').setView([51.505, -0.09], 13);
  <div id="map"></div>
   <ul class="properties">
   <% @properties.each do |house| %>
-    <li class="house" data-coord ="<%= house[:lat_lng] %>">
+    <li class="house" data-coord ="<%= house[:lat_lng] %>" >
       <ul>
       <% house[:images].each do |garden| %>
         <%="<li class='image' ><img src=' #{garden}' /></li>"%>
       <% end %>
-    </ul>
-    <li>
+      </ul>
+    </li>
   <% end %>
   </ul>
 </body>
@@ -47,10 +47,12 @@ var map = L.map('map').setView([51.505, -0.09], 13);
 }
 .house .image {
   display:inline-block;
-  width:18%;
+  width:14%;
   margin:1%
 }
-
+li {
+  list-style-type: none;
+}
 .house .image img {
   width:100%
 }

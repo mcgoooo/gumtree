@@ -22,7 +22,7 @@ end
 
 
 def index
-  url = "http://www.gumtree.com/1-bedroom-rent/east-london"
+  url = "http://www.gumtree.com/1-bedroom-rent/hackney"
   doc = Nokogiri::HTML(open(url))
   links = []
   doc.css('.ad-listings a').each do |link|
