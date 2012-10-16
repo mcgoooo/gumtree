@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.ie.css" />
+<![endif]-->
+
+<script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.js"></script>
+<script>
+var map = L.map('map').setView([51.505, -0.09], 13);
+
+      $('body').on('click','.house',function(){
+
+
+      })
+</script>
+</head>
+<body>
+ <div id="map"></div>
+  <ul class="properties">
+  <% @properties.each do |house| %>
+    <li class="house" data-coord ="<%= house[:lat_lng] %>">
+      <ul>
+      <% house[:images].each do |garden| %>
+        <%="<li class='image' ><img src=' #{garden}' /></li>"%>
+      <% end %>
+    </ul>
+    <li>
+  <% end %>
+  </ul>
+</body>
+</html>
+
+<style>
+#map { height: 120px; }
+
+.properties {
+  margin:250px 0;
+}
+.house {
+  display: block;
+  background:rgba(0,0,0,0.2);
+  width:100%;
+  margin: 20px 0;
+}
+.house .image {
+  display:inline-block;
+  width:18%;
+  margin:1%
+}
+
+.house .image img {
+  width:100%
+}
+</style>
