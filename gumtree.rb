@@ -25,27 +25,23 @@ def index
   url = "http://www.gumtree.com/1-bedroom-rent/hackney"
   doc = Nokogiri::HTML(open(url))
   links = []
-  doc.css('.ad-listings a').each do |link|
-    links.push(link['href'])
+  doc.css('a.listing-link').each do |link|
+    links.push("http://www.gumtree.com" + link['href'])
   end
   links
 end
 
 
 def show(url)
-  doc           = Nokogiri::HTML(open(url))
+  doc           = Nokogiri::HTML(open(URI.escape(url)))
   images        = []
   lat_lng       = ""
   google        =
-  doc.css('section.gallery img').each do |image|
-    src = image['src']
-    images.push(src) if src.include?('big')
-    if src.include?('google')
-      lat_lng = lat_long(src)
-      google = src
-    end
+  doc.css('#vip-tabs-images img').each do |image|
+    src = image['data-lazy']
+    images.push(src)
   end
-  {:images => images, :lat_lng => lat_lng, :url => url, :google => google}
+  {:images => images, :lat_lng => "", :url => "", :google => ""}
 end
 
 def lat_long(uri)
