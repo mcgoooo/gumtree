@@ -26,27 +26,31 @@
   <ul class="properties">
   <% @properties.each do |house| %>
     <li class="house" data-coord ="<%= house[:lat_lng] %>" >
-      <ul class="images">
-      <% house[:images].each do |garden| %>
-        <li class='image' >
-          <img src='<%= garden %>' />
-        </li>
-      <% end %>
-      </ul>
+      <div class="images-container">
+        <ul class="images">
+        <% house[:images].each do |garden| %>
+          <li class='image' >
+            <img src='<%= garden %>' />
+          </li>
+        <% end %>
+        </ul>
+      </div>
         <div class="particulars">
           <a href="<%= house[:floorplan] %>" target ="_blank"/>
             <img src="<%= house[:floorplan] %>"  class="floorplan" />
           </a>
-          <div class="details">
-            <h4>
-              <a href="<%= house[:link] %>" target="_blank">
-                <%= house[:price] %> and zoopla link
+          <div class="details-container">
+            <div class="details">
+              <h4>
+                <a href="<%= house[:link] %>" target="_blank">
+                  <%= house[:price] %> and zoopla link
+                </a>
+              </h4>
+              <span class="description"><%= house[:description].split(".").join("<p></p>") %></span>
+              <a href="https://www.google.com/maps/place/<%= house[:lat] %>,<%= house[:lng] %>" target="_blank">
+                <img src="//maps.googleapis.com/maps/api/staticmap?center=<%= house[:lat] %>%2C<%= house[:lng] %>&zoom=13&size=300x300&sensor=false&markers=color%3A0xf80046%7C<%= house[:lat] %>%2C<%= house[:lng] %>&key=AIzaSyCrwff0AtTbdgLZ6Qi0iGF_rQs0B4LE8RA" class="map"/>
               </a>
-            </h4>
-            <span class="description"><%= house[:description] %></span>
-            <a href="https://www.google.com/maps/place/<%= house[:lat] %>,<%= house[:lng] %>" target="_blank">
-              <img src="//maps.googleapis.com/maps/api/staticmap?center=<%= house[:lat] %>%2C<%= house[:lng] %>&zoom=13&size=300x300&sensor=false&markers=color%3A0xf80046%7C<%= house[:lat] %>%2C<%= house[:lng] %>&key=AIzaSyCrwff0AtTbdgLZ6Qi0iGF_rQs0B4LE8RA" class="map"/>
-            </a>
+            </div>
           </div>
         </div>
     </li>
@@ -59,24 +63,30 @@
 #map { height: 120px; }
 html,
 body {
-  background: #799;
+  background: #2b2b2b;
   max-width: 100%;
 }
 
-* {
+*,
+a {
   box-sizing: border-box;
+  color: #4b4b4b;
 }
 .properties {
   margin:0;
-  padding: 10px;
+  padding: 8px;
+}
+.images-container {
+  background:rgba(15,144,144,0.8);
+  padding: 8px;
 }
 .images{
+    padding: 0;
     width: auto;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    background:rgba(0,0,0,0.3);
-    padding: 10px;
+
 }
 .image {
     display: inline-block;
@@ -90,10 +100,8 @@ body {
 
 .house {
   display: block;
-  background:rgba(0,0,0,0.2);
   width:100%;
-  margin: 20px 0;
-  padding: 10px;
+  margin: 8px 0;
   clear: left;
   float: none;
   overflow: hidden;
@@ -111,12 +119,20 @@ li {
   display: block;
   width:50%;
   float: left;
+  padding: 8px;
+  background:rgba(121,32,58,0.8);
+  overflow: hidden;
 }
-
+.details-container {
+  padding: 8px;
+  background:rgba(225,131,10,0.8);
+  width: 50%;
+  float: left;
+}
 
 .details {
   background-color: white;
-  padding: 20px;
+  padding: 8px;
   overflow: hidden;
   height: auto;
   display: block;
@@ -126,7 +142,7 @@ li {
   color: #666;
   line-height: 1.35;
   float: left;
-  width: 50%;
+
 }
 
 
@@ -135,6 +151,8 @@ li {
   float: left;
   padding: 16px;
   font-size: 18px;
+  max-height: 280px;
+  overflow: scroll;
 }
 .map {
   width: 50%;
@@ -143,14 +161,22 @@ li {
 
 h4 {
   text-align: center;
-  font-size: 36px;
+  font-size: 24px;
+  margin: 0;
+  padding: 8px 16px 16px;
 }
 
 @media (max-width: 1000px) {
   .floorplan {
-    width: 100%
+    width: auto;
+    clear: left;
+    float: none;
+    margin: 0 auto;
+    max-height: 600px;
+    max-width: 100%;
+    min-width: 50%;
   }
-  .details {
+  .details-container {
     width: 100%
   }
   .description {

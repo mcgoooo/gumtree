@@ -18,7 +18,7 @@ get '/' do
 
   @properties = all_together_now
 
-  erb :index
+  erb :index,:escape_html => false
 end
 
 
