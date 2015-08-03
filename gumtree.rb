@@ -74,7 +74,7 @@ end
 
 def all_together_now
   json = []
-  index[0..1].each do |link|
+  index.each do |link|
     json.push(show(link))
   end
   json
