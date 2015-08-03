@@ -22,11 +22,11 @@ end
 
 
 def index
-  url = "http://www.gumtree.com/1-bedroom-rent/hackney"
+  url = "http://www.zoopla.co.uk/for-sale/property/london/mattison-road/n4-1bq/?q=n4%201bq&category=residential&include_shared_accommodation=&keywords=&radius=0&added=&price_min=&price_max=500000&beds_min=&beds_max=&include_retirement_homes=true&include_shared_ownership=true&new_homes=include&polyenc=yruyHv%7DGgxAtzAem%40lbAcJeSsG%60gEhDxk%40i%40NnDz%40rDO~FgBzFeFbMIzH%7DAxBcD~%40oFzdAfn%40hVc%7DBkHwj%40%7Cc%40bR&search_source=refine&user_alert_id=5495743"
   doc = Nokogiri::HTML(open(url))
   links = []
-  doc.css('a.listing-link').each do |link|
-    links.push("http://www.gumtree.com" + link['href'])
+  doc.css('a:contains("Full details")').each do |link|
+    links.push("http://www.zoopla.co.uk" +link['href'])
   end
   links
 end
@@ -37,8 +37,8 @@ def show(url)
   images        = []
   lat_lng       = ""
   google        =
-  doc.css('#vip-tabs-images img').each do |image|
-    src = image['data-lazy']
+  doc.css('.images-thumb').each do |image|
+    src = image['data-photo']
     images.push(src)
   end
   {:images => images, :lat_lng => "", :url => "", :google => ""}
