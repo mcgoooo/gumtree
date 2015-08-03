@@ -5,6 +5,7 @@ require 'json'
 require 'rack'
 
 require 'sinatra'
+require "sinatra/reloader" if development?
 
 get '/' do
   @properties = all_together_now
@@ -33,15 +34,36 @@ end
 
 
 def show(url)
-  doc           = Nokogiri::HTML(open(URI.escape(url)))
-  images        = []
-  lat_lng       = ""
-  google        =
-  doc.css('.images-thumb').each do |image|
-    src = image['data-photo']
-    images.push(src)
+  @doc     = Nokogiri::HTML(open(URI.escape(url)))
+  images   = []
+  lat_lng  = ""
+  google   = ""
+  floor    = @doc.css("[data-ga-category='Floorplan']")
+  floor    = floor[0].nil? ? nil : floor[0]["href"]
+  images   = get_images(@doc.css('.images-thumb'))
+  desc     = @doc.css('[itemprop="description"]').text
+  price    = @doc.css('.text-price.listing-details-price').text
+  lat      = @doc.css('[itemprop="latitude"]')[0]["content"]
+  lng      = @doc.css('[itemprop="longitude"]')[0]["content"]
+
+  {
+    :images => images,
+    :lat => lat,
+    :lng => lng,
+    :floorplan => floor,
+    :description => desc,
+    :price => price,
+    :link => url
+  }
+end
+
+def get_images(images)
+  _images = []
+  images.each do |image|
+    src = image["data-photo"]
+    _images.push(src)
   end
-  {:images => images, :lat_lng => "", :url => "", :google => ""}
+  _images
 end
 
 def lat_long(uri)
@@ -52,7 +74,7 @@ end
 
 def all_together_now
   json = []
-  index.each do |link|
+  index[0..1].each do |link|
     json.push(show(link))
   end
   json

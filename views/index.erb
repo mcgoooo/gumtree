@@ -2,33 +2,34 @@
 
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
-<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.ie.css" />
-<![endif]-->
-
-<script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.js"></script>
-<script>
-var map = L.map('map').setView([51.505, -0.09], 13);
-
-      $('body').on('click','.house',function(){
-
-
-      })
-</script>
 </head>
 <body>
- <div id="map"></div>
   <ul class="properties">
   <% @properties.each do |house| %>
     <li class="house" data-coord ="<%= house[:lat_lng] %>" >
-      <ul>
+      <ul class="images">
       <% house[:images].each do |garden| %>
-        <%="<li class='image' ><img src=' #{garden}' /></li>"%>
+        <li class='image' >
+          <img src='<%= garden %>' />
+        </li>
       <% end %>
-        <%="<li class='image' ><img src=' #{house[:google]}' /></li>"%>
-
       </ul>
+        <div class="particulars">
+          <a href="<%= house[:floorplan] %>" target ="_blank"/>
+            <img src="<%= house[:floorplan] %>"  class="floorplan" />
+          </a>
+          <div class="details">
+            <h4>
+              <a href="<%= house[:link] %>" target="_blank">
+                <%= house[:price] %> and zoopla link
+              </a>
+            </h4>
+            <span class="description"><%= house[:description] %></span>
+            <a href="https://www.google.com/maps/place/<%= house[:lat] %>,<%= house[:lng] %>" target="_blank">
+              <img src="//maps.googleapis.com/maps/api/staticmap?center=<%= house[:lat] %>%2C<%= house[:lng] %>&zoom=13&size=300x300&sensor=false&markers=color%3A0xf80046%7C<%= house[:lat] %>%2C<%= house[:lng] %>&key=AIzaSyCrwff0AtTbdgLZ6Qi0iGF_rQs0B4LE8RA" class="map"/>
+            </a>
+          </div>
+        </div>
     </li>
   <% end %>
   </ul>
@@ -37,27 +38,100 @@ var map = L.map('map').setView([51.505, -0.09], 13);
 
 <style>
 #map { height: 120px; }
-html {
-  background: #522;
+html,
+body {
+  background: #799;
+  max-width: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 .properties {
-  margin:250px 0;
+  margin:0;
+  padding: 10px;
 }
+.images{
+    width: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    background:rgba(0,0,0,0.3);
+    padding: 10px;
+}
+.image {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 400px;
+}
+
+.image img {
+    border: 0;
+}
+
 .house {
   display: block;
   background:rgba(0,0,0,0.2);
   width:100%;
   margin: 20px 0;
+  padding: 10px;
+  clear: left;
+  float: none;
+  overflow: hidden;
 }
-.house .image {
-  display:inline-block;
-  width:14%;
-  margin:1%
-}
+
+
 li {
   list-style-type: none;
 }
 .house .image img {
   width:100%
+}
+
+.floorplan {
+  display: block;
+  width:50%;
+  float: left;
+}
+
+
+.details {
+  background-color: white;
+  padding: 20px;
+  overflow: hidden;
+  height: auto;
+  display: block;
+  float: none;
+  white-space: normal;
+  font-family: helvetica;
+  color: #666;
+  line-height: 1.35;
+  float: left;
+  width: 50%;
+}
+
+
+.description {
+  width: 50%;
+  float: left;
+  padding: 16px;
+  font-size: 18px;
+}
+.map {
+  width: 50%;
+  float: left;
+}
+
+h4 {
+  text-align: center;
+}
+
+@media (max-width: 1000px) {
+  .floorplan {
+    width: 100%
+  }
+  .details {
+    width: 100%
+  }
 }
 </style>
