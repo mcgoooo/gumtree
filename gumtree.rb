@@ -8,7 +8,16 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 
 get '/' do
+  @min_price= 350000
+  @max_price= 500000
+  @min_beds = 1
+  @max_beds = 3
+  @url      = "london/mattison-road/n4-1bq/?q=n4%201bq&category=residential&radius=0&price_min=#{@min_price}&price_max=#{@max_price}&beds_min=#{@min_beds}&beds_max#{@max_beds}=&polyenc=yruyHv%7DGgxAtzAem%40lbAcJeSsG%60gEhDxk%40i%40NnDz%40rDO~FgBzFeFbMIzH%7DAxBcD~%40oFzdAfn%40hVc%7DBkHwj%40%7Cc%40bR&pn=1"
+  @list_view= "http://www.zoopla.co.uk/for-sale/property/#{@url}"
+  @map_view = "http://www.zoopla.co.uk/for-sale/map/property/#{@url}"
+
   @properties = all_together_now
+
   erb :index
 end
 
@@ -19,12 +28,9 @@ end
 
 
 
-
-
-
 def index
-  url = "http://www.zoopla.co.uk/for-sale/property/london/mattison-road/n4-1bq/?q=n4%201bq&category=residential&include_shared_accommodation=&keywords=&radius=0&added=&price_min=350000&price_max=500000&beds_min=1&beds_max=3&include_retirement_homes=true&include_shared_ownership=true&new_homes=include&polyenc=yruyHv%7DGgxAtzAem%40lbAcJeSsG%60gEhDxk%40i%40NnDz%40rDO~FgBzFeFbMIzH%7DAxBcD~%40oFzdAfn%40hVc%7DBkHwj%40%7Cc%40bR&search_source=refine&user_alert_id=5495743"
-  doc = Nokogiri::HTML(open(url))
+  url = ""
+  doc = Nokogiri::HTML(open(@list_view))
   links = []
   doc.css('a:contains("Full details")').each do |link|
     links.push("http://www.zoopla.co.uk" +link['href'])
